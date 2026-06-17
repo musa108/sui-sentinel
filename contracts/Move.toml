@@ -1,0 +1,9 @@
+[package]
+name = "RiskCompliance"
+edition = "2024.alpha" # Using modern Sui edition
+
+[dependencies]
+Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "framework/testnet" }
+
+[addresses]
+risk_compliance = "0x0"

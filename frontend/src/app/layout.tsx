@@ -31,7 +31,7 @@ export default function RootLayout({
     }, 60000);
 
     // Setup active WebSocket tracker for connection status panel
-    const wsUrl = "ws://localhost:5000";
+    const wsUrl = "https://sui-sentinel.onrender.com";
     let socket: WebSocket;
 
     function connect() {

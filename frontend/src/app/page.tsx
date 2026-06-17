@@ -69,7 +69,7 @@ export default function OverviewPage() {
   const handleDAOResume = useCallback(async () => {
     setResuming(true);
     try {
-      const res = await fetch("http://localhost:5000/api/market-resume", {
+      const res = await fetch("https://sui-sentinel.onrender.com/api/market-resume", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ reason: "DAO operator manual override — risk conditions reassessed" }),
@@ -89,10 +89,10 @@ export default function OverviewPage() {
     async function fetchData() {
       try {
         const [alertsRes, statsRes, priceRes, statusRes] = await Promise.all([
-          fetch("http://localhost:5000/api/alerts"),
-          fetch("http://localhost:5000/api/stats"),
-          fetch("http://localhost:5000/api/price"),
-          fetch("http://localhost:5000/api/market-status"),
+          fetch("https://sui-sentinel.onrender.com/api/alerts"),
+          fetch("https://sui-sentinel.onrender.com/api/stats"),
+          fetch("https://sui-sentinel.onrender.com/api/price"),
+          fetch("https://sui-sentinel.onrender.com/api/market-status"),
         ]);
         if (alertsRes.ok) setAlerts(await alertsRes.json());
         if (statsRes.ok) {
@@ -122,7 +122,7 @@ export default function OverviewPage() {
     fetchData();
 
     // WebSocket stream
-    const ws = new WebSocket("ws://localhost:5000");
+    const ws = new WebSocket("https://sui-sentinel.onrender.com");
     ws.onmessage = (event) => {
       try {
         const msg = JSON.parse(event.data);

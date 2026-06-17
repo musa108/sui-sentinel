@@ -30,7 +30,7 @@ export default function AnalyticsPage() {
   useEffect(() => {
     async function fetchAnalytics() {
       try {
-        const res = await fetch("http://localhost:5000/api/stats");
+        const res = await fetch("https://sui-sentinel.onrender.com/api/stats");
         if (res.ok) {
           const stats = await res.json();
           setData(stats);

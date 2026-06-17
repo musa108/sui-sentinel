@@ -30,7 +30,7 @@ export default function SettingsPage() {
   useEffect(() => {
     async function loadSettings() {
       try {
-        const res = await fetch("http://localhost:5000/api/settings");
+        const res = await fetch("https://sui-sentinel.onrender.com/api/settings");
         if (res.ok) {
           const data = await res.json();
           setSettings(data);
@@ -51,7 +51,7 @@ export default function SettingsPage() {
     setSaving(true);
     setSuccess(false);
     try {
-      const res = await fetch("http://localhost:5000/api/settings", {
+      const res = await fetch("https://sui-sentinel.onrender.com/api/settings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(settings),

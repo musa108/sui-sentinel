@@ -56,7 +56,7 @@ export default function AnalyticsPage() {
   if (!data) {
     return (
       <div className="flex flex-col items-center justify-center h-[500px] text-slate-500">
-        <ShieldAlert className="w-8 h-8 text-slate-755 mb-2" />
+        <ShieldAlert className="w-8 h-8 text-slate-700 mb-2" />
         <p className="text-xs font-mono">FAILED TO LOAD TELEMETRY ANALYSIS MATRIX</p>
       </div>
     );
@@ -69,31 +69,31 @@ export default function AnalyticsPage() {
     <div className="space-y-8 max-w-7xl mx-auto">
       {/* Title */}
       <div>
-        <h2 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-slate-100 to-slate-400 bg-clip-text text-transparent">Telemetry Analytics</h2>
-        <p className="text-sm text-slate-400 mt-2 font-mono">Aggregated metrics, risk vector distributions, and volume trends on the Sui network.</p>
+        <h2 className="text-2xl md:text-3xl font-display font-bold tracking-tight bg-gradient-to-r from-slate-100 to-slate-400 bg-clip-text text-transparent">Telemetry Analytics</h2>
+        <p className="text-xs md:text-sm text-slate-400 mt-1.5 font-mono">Aggregated metrics, risk vector distributions, and volume trends on the Sui network.</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Timeline Area Chart */}
-        <div className="p-6 bg-[#0b1121]/50 border border-slate-800 rounded-xl backdrop-blur-md space-y-4">
-          <div className="flex items-center space-x-2 border-b border-slate-800 pb-3">
-            <TrendingUp className="w-4.5 h-4.5 text-cyan-400" />
-            <h4 className="font-bold text-sm uppercase tracking-wider font-mono text-slate-200">Risk Scores & Anomalies Timeline</h4>
+        <div className="premium-card p-6 space-y-4">
+          <div className="flex items-center space-x-2 border-b border-slate-900 pb-3 shrink-0">
+            <TrendingUp className="w-4.5 h-4.5 text-cyan-400 animate-pulse" />
+            <h4 className="font-bold text-xs md:text-sm uppercase tracking-wider font-display text-slate-200">Risk Scores & Anomalies Timeline</h4>
           </div>
-          <div className="h-80 w-full text-xs font-mono">
+          <div className="h-80 w-full text-[10px] md:text-xs font-mono">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={data.timeSeriesData}>
+              <AreaChart data={data.timeSeriesData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="scoreColor" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#00f2fe" stopOpacity={0.25}/>
                     <stop offset="95%" stopColor="#00f2fe" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" opacity={0.25} />
-                <XAxis dataKey="time" stroke="#64748b" />
-                <YAxis stroke="#64748b" domain={[0, 100]} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" opacity={0.15} />
+                <XAxis dataKey="time" stroke="#475569" />
+                <YAxis stroke="#475569" domain={[0, 100]} />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: "#070b19", borderColor: "#1e293b", borderRadius: "8px", color: "#e2e8f0" }}
+                  contentStyle={{ backgroundColor: "#060a17", borderColor: "rgba(255, 255, 255, 0.05)", borderRadius: "12px", color: "#e2e8f0", backdropFilter: "blur(12px)" }}
                   itemStyle={{ color: "#00f2fe" }}
                 />
                 <Area type="monotone" dataKey="score" stroke="#00f2fe" strokeWidth={2} fillOpacity={1} fill="url(#scoreColor)" name="Risk Score" />
@@ -103,12 +103,12 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Severity Distribution Pie Chart */}
-        <div className="p-6 bg-[#0b1121]/50 border border-slate-800 rounded-xl backdrop-blur-md space-y-4">
-          <div className="flex items-center space-x-2 border-b border-slate-800 pb-3">
-            <PieIcon className="w-4.5 h-4.5 text-cyan-400" />
-            <h4 className="font-bold text-sm uppercase tracking-wider font-mono text-slate-200">Threat Severity Distribution</h4>
+        <div className="premium-card p-6 space-y-4">
+          <div className="flex items-center space-x-2 border-b border-slate-900 pb-3 shrink-0">
+            <PieIcon className="w-4.5 h-4.5 text-cyan-400 animate-pulse" />
+            <h4 className="font-bold text-xs md:text-sm uppercase tracking-wider font-display text-slate-200">Threat Severity Distribution</h4>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center h-80 lg:h-auto md:h-80">
             {/* Pie Chart */}
             <div className="h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
@@ -127,21 +127,21 @@ export default function AnalyticsPage() {
                     ))}
                   </Pie>
                   <Tooltip 
-                    contentStyle={{ backgroundColor: "#070b19", borderColor: "#1e293b", borderRadius: "8px", color: "#e2e8f0" }}
+                    contentStyle={{ backgroundColor: "#060a17", borderColor: "rgba(255, 255, 255, 0.05)", borderRadius: "12px", color: "#e2e8f0", backdropFilter: "blur(12px)" }}
                   />
                 </PieChart>
               </ResponsiveContainer>
             </div>
             
             {/* Legends */}
-            <div className="space-y-3 font-mono text-xs">
+            <div className="space-y-2 md:space-y-3 font-mono text-[10px] md:text-xs">
               {data.categoryDistribution.map((entry, index) => (
-                <div key={entry.name} className="flex justify-between items-center p-2.5 bg-slate-950/40 border border-slate-800/60 rounded">
-                  <div className="flex items-center space-x-2">
-                    <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: COLORS[index] }} />
-                    <span className="text-slate-400">{entry.name}</span>
+                <div key={entry.name} className="flex justify-between items-center p-2 bg-slate-950/40 border border-slate-900 rounded-xl">
+                  <div className="flex items-center space-x-2 min-w-0">
+                    <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: COLORS[index] }} />
+                    <span className="text-slate-400 truncate">{entry.name}</span>
                   </div>
-                  <span className="font-bold text-slate-200">{entry.value} alerts</span>
+                  <span className="font-bold text-slate-200 shrink-0 ml-2">{entry.value} alerts</span>
                 </div>
               ))}
             </div>
@@ -149,22 +149,28 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Protocol Alert Count Bar Chart */}
-        <div className="p-6 bg-[#0b1121]/50 border border-slate-800 rounded-xl backdrop-blur-md lg:col-span-2 space-y-4">
-          <div className="flex items-center space-x-2 border-b border-slate-800 pb-3">
-            <BarChart4 className="w-4.5 h-4.5 text-cyan-400" />
-            <h4 className="font-bold text-sm uppercase tracking-wider font-mono text-slate-200">Threat Alert Vectors Per Protocol</h4>
+        <div className="premium-card p-6 lg:col-span-2 space-y-4">
+          <div className="flex items-center space-x-2 border-b border-slate-900 pb-3 shrink-0">
+            <BarChart4 className="w-4.5 h-4.5 text-cyan-400 animate-pulse" />
+            <h4 className="font-bold text-xs md:text-sm uppercase tracking-wider font-display text-slate-200">Threat Alert Vectors Per Protocol</h4>
           </div>
-          <div className="h-80 w-full text-xs font-mono">
+          <div className="h-80 w-full text-[10px] md:text-xs font-mono">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={data.protocolStats}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" opacity={0.25} />
-                <XAxis dataKey="name" stroke="#64748b" />
-                <YAxis stroke="#64748b" />
+              <BarChart data={data.protocolStats} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="barColor" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#f857a6" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#f857a6" stopOpacity={0.2}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" opacity={0.15} />
+                <XAxis dataKey="name" stroke="#475569" />
+                <YAxis stroke="#475569" />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: "#070b19", borderColor: "#1e293b", borderRadius: "8px", color: "#e2e8f0" }}
+                  contentStyle={{ backgroundColor: "#060a17", borderColor: "rgba(255, 255, 255, 0.05)", borderRadius: "12px", color: "#e2e8f0", backdropFilter: "blur(12px)" }}
                   itemStyle={{ color: "#f857a6" }}
                 />
-                <Bar dataKey="alertsCount" fill="#f857a6" radius={[4, 4, 0, 0]} name="Alert Count" />
+                <Bar dataKey="alertsCount" fill="url(#barColor)" radius={[6, 6, 0, 0]} name="Alert Count" stroke="#f857a6" strokeWidth={1} />
               </BarChart>
             </ResponsiveContainer>
           </div>

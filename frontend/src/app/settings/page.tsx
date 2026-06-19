@@ -90,22 +90,22 @@ export default function SettingsPage() {
     <div className="max-w-3xl mx-auto space-y-8">
       {/* Title */}
       <div>
-        <h2 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-slate-100 to-slate-400 bg-clip-text text-transparent">Rules & Settings</h2>
-        <p className="text-sm text-slate-400 mt-2 font-mono">Configure autonomous auditing thresholds, filter definitions, and notification alerts.</p>
+        <h2 className="text-2xl md:text-3xl font-display font-bold tracking-tight bg-gradient-to-r from-slate-100 to-slate-400 bg-clip-text text-transparent">Rules & Settings</h2>
+        <p className="text-xs md:text-sm text-slate-400 mt-1.5 font-mono">Configure autonomous auditing thresholds, filter definitions, and notification alerts.</p>
       </div>
 
-      <form onSubmit={handleSave} className="space-y-6">
+      <form onSubmit={handleSave} className="space-y-6 pb-12">
         {/* Risk Threshold Card */}
-        <div className="p-6 bg-[#0b1121]/50 border border-slate-800 rounded-xl backdrop-blur-md space-y-5">
-          <div className="flex items-center space-x-2 border-b border-slate-800 pb-3">
+        <div className="premium-card p-6 space-y-5">
+          <div className="flex items-center space-x-2.5 border-b border-slate-900 pb-3">
             <Sliders className="w-4.5 h-4.5 text-cyan-400" />
-            <h4 className="font-bold text-sm uppercase tracking-wider font-mono text-slate-200">Security Severity Thresholds</h4>
+            <h4 className="font-bold text-xs md:text-sm uppercase tracking-wider font-display text-slate-200">Security Severity Thresholds</h4>
           </div>
 
           <div className="space-y-4 font-mono text-xs">
             <div className="flex justify-between items-center">
               <label className="text-slate-400 font-medium">Notification Trigger Threshold (Score)</label>
-              <span className="font-bold text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-2 py-0.5 rounded">
+              <span className="font-bold text-cyan-400 bg-cyan-500/5 border border-cyan-500/15 px-2.5 py-0.5 rounded-lg">
                 {settings.threshold} / 100
               </span>
             </div>
@@ -113,28 +113,28 @@ export default function SettingsPage() {
               type="range"
               min="0"
               max="100"
-              className="w-full h-1.5 bg-slate-950 rounded-lg appearance-none cursor-pointer accent-cyan-500"
+              className="w-full h-1.5 bg-slate-950 rounded-lg appearance-none cursor-pointer accent-cyan-500 focus:outline-none"
               value={settings.threshold}
               onChange={(e) => setSettings({ ...settings, threshold: Number(e.target.value) })}
             />
             <p className="text-[10px] text-slate-500 font-sans leading-relaxed">
-              Transactions receiving a combined risk score greater than or equal to this threshold will trigger on-chain storage events and notification notifications.
+              Transactions receiving a combined risk score greater than or equal to this threshold will trigger on-chain storage events and external alerts.
             </p>
           </div>
         </div>
 
         {/* Notifications Config Card */}
-        <div className="p-6 bg-[#0b1121]/50 border border-slate-800 rounded-xl backdrop-blur-md space-y-5">
-          <div className="flex items-center space-x-2 border-b border-slate-800 pb-3">
+        <div className="premium-card p-6 space-y-5">
+          <div className="flex items-center space-x-2.5 border-b border-slate-900 pb-3">
             <Bell className="w-4.5 h-4.5 text-cyan-400" />
-            <h4 className="font-bold text-sm uppercase tracking-wider font-mono text-slate-200">Alert Notifications Dispatch</h4>
+            <h4 className="font-bold text-xs md:text-sm uppercase tracking-wider font-display text-slate-200">Alert Notifications Dispatch</h4>
           </div>
 
           <div className="space-y-4 font-mono text-xs">
             <div className="space-y-2">
               <label className="text-slate-400 font-medium block">Active Dispatch Preference</label>
               <select
-                className="w-full px-3 py-2.5 bg-slate-950 border border-slate-800 rounded-lg text-slate-350 focus:outline-none focus:border-cyan-500/40"
+                className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-900 rounded-xl text-slate-300 focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/40 font-mono transition"
                 value={settings.notificationType}
                 onChange={(e) => setSettings({ ...settings, notificationType: e.target.value })}
               >
@@ -150,33 +150,33 @@ export default function SettingsPage() {
         </div>
 
         {/* Rules Engine Config Card */}
-        <div className="p-6 bg-[#0b1121]/50 border border-slate-800 rounded-xl backdrop-blur-md space-y-6">
-          <div className="flex items-center space-x-2 border-b border-slate-800 pb-3">
-            <ToggleLeft className="w-4.5 h-4.5 text-cyan-405" />
-            <h4 className="font-bold text-sm uppercase tracking-wider font-mono text-slate-200">Active Rule Engine Directives</h4>
+        <div className="premium-card p-6 space-y-6">
+          <div className="flex items-center space-x-2.5 border-b border-slate-900 pb-3">
+            <ToggleLeft className="w-4.5 h-4.5 text-cyan-400" />
+            <h4 className="font-bold text-xs md:text-sm uppercase tracking-wider font-display text-slate-200">Active Rule Engine Directives</h4>
           </div>
 
-          <div className="space-y-6 font-mono text-xs">
+          <div className="space-y-4 font-mono text-xs">
             {/* Rule 1 */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 bg-slate-950/45 border border-slate-800/80 rounded-lg">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 bg-slate-950/40 border border-slate-900 rounded-xl">
               <div className="space-y-1 md:max-w-md">
                 <span className="font-bold text-slate-300">Large Transaction Warning Rule</span>
                 <p className="text-[10px] text-slate-500 font-sans leading-relaxed">Flags trades or swaps that exceed standard liquidity pool depth margins.</p>
               </div>
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-4 mt-2 md:mt-0 justify-between md:justify-end w-full md:w-auto">
                 <input
                   type="number"
-                  className="w-28 px-2.5 py-1.5 bg-slate-900 border border-slate-800 rounded text-slate-300 font-semibold focus:outline-none focus:border-cyan-500/40 text-right"
+                  className="w-28 px-3 py-1.5 bg-slate-950 border border-slate-900 rounded-lg text-slate-200 font-semibold focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/40 text-right font-mono transition"
                   value={settings.largeTxThreshold}
                   onChange={(e) => setSettings({ ...settings, largeTxThreshold: Number(e.target.value) })}
                 />
                 <button
                   type="button"
                   onClick={() => setSettings({ ...settings, enableLargeTxRule: !settings.enableLargeTxRule })}
-                  className={`px-3 py-1.5 rounded font-bold uppercase transition ${
+                  className={`px-3 py-1.5 rounded-xl font-bold uppercase transition text-[10px] tracking-wider shrink-0 cursor-pointer ml-4 ${
                     settings.enableLargeTxRule 
-                      ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20" 
-                      : "bg-slate-900 text-slate-500 border border-slate-800"
+                      ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/25 font-bold" 
+                      : "bg-slate-950 text-slate-550 border border-slate-900"
                   }`}
                 >
                   {settings.enableLargeTxRule ? "ACTIVE" : "MUTED"}
@@ -185,28 +185,28 @@ export default function SettingsPage() {
             </div>
 
             {/* Rule 2 */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 bg-slate-950/45 border border-slate-800/80 rounded-lg">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 bg-slate-950/40 border border-slate-900 rounded-xl">
               <div className="space-y-1 md:max-w-md">
                 <span className="font-bold text-slate-300">Pool Liquidity Drain Warning Rule</span>
                 <p className="text-[10px] text-slate-500 font-sans leading-relaxed">Flags rapid reserve reductions indicating potential rug-pull signature sequences.</p>
               </div>
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-4 mt-2 md:mt-0 justify-between md:justify-end w-full md:w-auto">
                 <div className="relative">
                   <input
                     type="number"
-                    className="w-20 pr-6 pl-2 py-1.5 bg-slate-900 border border-slate-800 rounded text-slate-300 font-semibold focus:outline-none focus:border-cyan-500/40 text-right"
+                    className="w-20 pr-6 pl-3 py-1.5 bg-slate-950 border border-slate-900 rounded-lg text-slate-200 font-semibold focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/40 text-right font-mono transition"
                     value={settings.liquidityDrainPct}
                     onChange={(e) => setSettings({ ...settings, liquidityDrainPct: Number(e.target.value) })}
                   />
-                  <span className="absolute right-2 top-1.5 text-slate-500">%</span>
+                  <span className="absolute right-2.5 top-1.5 text-slate-500 font-mono">%</span>
                 </div>
                 <button
                   type="button"
                   onClick={() => setSettings({ ...settings, enableDrainRule: !settings.enableDrainRule })}
-                  className={`px-3 py-1.5 rounded font-bold uppercase transition ${
+                  className={`px-3 py-1.5 rounded-xl font-bold uppercase transition text-[10px] tracking-wider shrink-0 cursor-pointer ml-4 ${
                     settings.enableDrainRule 
-                      ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20" 
-                      : "bg-slate-900 text-slate-500 border border-slate-800"
+                      ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/25 font-bold" 
+                      : "bg-slate-950 text-slate-550 border border-slate-900"
                   }`}
                 >
                   {settings.enableDrainRule ? "ACTIVE" : "MUTED"}
@@ -215,28 +215,28 @@ export default function SettingsPage() {
             </div>
 
             {/* Rule 3 */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 bg-slate-950/45 border border-slate-800/80 rounded-lg">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 bg-slate-950/40 border border-slate-900 rounded-xl">
               <div className="space-y-1 md:max-w-md">
                 <span className="font-bold text-slate-300">Sybil / Newly Created Wallet Rule</span>
                 <p className="text-[10px] text-slate-500 font-sans leading-relaxed">Increases monitoring sensitivity on transactions initiated by newly created addresses.</p>
               </div>
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-4 mt-2 md:mt-0 justify-between md:justify-end w-full md:w-auto">
                 <div className="relative">
                   <input
                     type="number"
-                    className="w-20 pr-6 pl-2 py-1.5 bg-slate-900 border border-slate-800 rounded text-slate-300 font-semibold focus:outline-none focus:border-cyan-500/40 text-right"
+                    className="w-20 pr-6 pl-3 py-1.5 bg-slate-950 border border-slate-900 rounded-lg text-slate-200 font-semibold focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/40 text-right font-mono transition"
                     value={settings.newWalletAgeHours}
                     onChange={(e) => setSettings({ ...settings, newWalletAgeHours: Number(e.target.value) })}
                   />
-                  <span className="absolute right-2 top-1.5 text-slate-500">h</span>
+                  <span className="absolute right-2.5 top-1.5 text-slate-500 font-mono">h</span>
                 </div>
                 <button
                   type="button"
                   onClick={() => setSettings({ ...settings, enableWalletRule: !settings.enableWalletRule })}
-                  className={`px-3 py-1.5 rounded font-bold uppercase transition ${
+                  className={`px-3 py-1.5 rounded-xl font-bold uppercase transition text-[10px] tracking-wider shrink-0 cursor-pointer ml-4 ${
                     settings.enableWalletRule 
-                      ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20" 
-                      : "bg-slate-900 text-slate-500 border border-slate-800"
+                      ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/25 font-bold" 
+                      : "bg-slate-950 text-slate-550 border border-slate-900"
                   }`}
                 >
                   {settings.enableWalletRule ? "ACTIVE" : "MUTED"}
@@ -260,7 +260,7 @@ export default function SettingsPage() {
           <button
             type="submit"
             disabled={saving}
-            className="flex items-center gap-2 px-6 py-3 bg-cyan-600 hover:bg-cyan-500 font-bold text-xs font-mono rounded-lg text-slate-950 transition hover:shadow-lg disabled:opacity-50"
+            className="flex items-center gap-2 px-6 py-3 bg-cyan-700 hover:bg-cyan-600 font-bold text-xs font-mono rounded-xl text-white transition hover:shadow-lg hover:shadow-cyan-500/15 disabled:opacity-50 cursor-pointer shadow-lg"
           >
             <Save className="w-4 h-4" /> {saving ? "SAVING telemetry config..." : "COMMIT DIRECTIVES"}
           </button>

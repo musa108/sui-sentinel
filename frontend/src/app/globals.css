@@ -1,23 +1,32 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: var(--font-plus-jakarta), system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), monospace;
+  
+  --color-brand-bg: #030712;
+  --color-brand-bg-card: rgba(8, 12, 28, 0.65);
+  --color-brand-border: rgba(148, 163, 184, 0.08);
+  --color-brand-border-hover: rgba(0, 242, 254, 0.35);
+  
+  --color-neon-cyan: #00f2fe;
+  --color-neon-blue: #4facfe;
+  --color-neon-pink: #f857a6;
+  --color-neon-red: #ef4444;
+  --color-neon-emerald: #10b981;
+  --color-neon-amber: #f59e0b;
+}
+
 :root {
-  --background: #060919;
-  --foreground: #e2e8f0;
-  
-  --card-bg: rgba(11, 17, 33, 0.65);
-  --card-border: rgba(30, 41, 59, 0.6);
-  --card-border-glow: rgba(0, 242, 254, 0.2);
-  
-  --neon-cyan: #00f2fe;
-  --neon-blue: #4facfe;
-  --neon-pink: #f857a6;
-  --neon-red: #ff5858;
+  --background: #030712;
+  --foreground: #f8fafc;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-sans);
   overflow-x: hidden;
 }
 
@@ -27,54 +36,72 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #070b19;
+  background: #030712;
 }
 ::-webkit-scrollbar-thumb {
   background: #1e293b;
-  border-radius: 4px;
+  border-radius: 9999px;
+  border: 1px solid transparent;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #00f2fe55;
+  background: rgba(0, 242, 254, 0.3);
 }
 
-/* Glowing text elements */
+/* Glow Utilities */
 .glow-text-cyan {
   text-shadow: 0 0 10px rgba(0, 242, 254, 0.5), 0 0 20px rgba(0, 242, 254, 0.2);
 }
 
+.glow-text-pink {
+  text-shadow: 0 0 10px rgba(248, 87, 166, 0.5), 0 0 20px rgba(248, 87, 166, 0.2);
+}
+
 .glow-text-red {
-  text-shadow: 0 0 10px rgba(239, 68, 68, 0.6), 0 0 20px rgba(239, 68, 68, 0.3);
+  text-shadow: 0 0 10px rgba(239, 68, 68, 0.5), 0 0 20px rgba(239, 68, 68, 0.2);
 }
 
-/* Soft card glows */
-.card-glow {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* Cyber grid background template */
+.cyber-grid {
+  background-size: 60px 60px;
+  background-image: 
+    linear-gradient(to right, rgba(148, 163, 184, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.015) 1px, transparent 1px);
 }
 
-.card-glow:hover {
-  box-shadow: 0 0 25px rgba(0, 242, 254, 0.12);
-  border-color: rgba(0, 242, 254, 0.4);
+/* Premium Card hover effects */
+.premium-card {
+  background: rgba(8, 14, 28, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+}
+
+.premium-card:hover {
+  border-color: rgba(0, 242, 254, 0.25);
+  box-shadow: 0 10px 40px rgba(0, 242, 254, 0.05), inset 0 0 12px rgba(0, 242, 254, 0.02);
   transform: translateY(-2px);
 }
 
-/* Alert indicator pulses */
+/* Glowing border pulse for warnings */
 .pulse-red-border {
-  animation: pulse-red-anim 1.8s infinite alternate;
+  animation: pulse-red-anim 2s infinite alternate;
 }
 
 @keyframes pulse-red-anim {
   0% {
-    box-shadow: 0 0 5px rgba(239, 68, 68, 0.4);
-    border-color: rgba(239, 68, 68, 0.4);
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.25);
   }
   100% {
-    box-shadow: 0 0 20px rgba(239, 68, 68, 0.8);
-    border-color: rgba(239, 68, 68, 0.95);
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.45);
+    border-color: rgba(239, 68, 68, 0.65);
   }
 }
 
 .pulse-teal-dot {
-  animation: pulse-teal-anim 1.5s infinite;
+  animation: pulse-teal-anim 2s infinite;
 }
 
 @keyframes pulse-teal-anim {
@@ -83,9 +110,9 @@ body {
     opacity: 0.6;
   }
   50% {
-    transform: scale(1.2);
+    transform: scale(1.25);
     opacity: 1;
-    box-shadow: 0 0 10px rgba(0, 242, 254, 0.8);
+    box-shadow: 0 0 12px rgba(0, 242, 254, 0.7);
   }
   100% {
     transform: scale(0.9);
@@ -93,10 +120,8 @@ body {
   }
 }
 
-/* Tech cyber grid background template */
-.cyber-grid {
-  background-size: 50px 50px;
-  background-image: 
-    linear-gradient(to right, rgba(148, 163, 184, 0.02) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(148, 163, 184, 0.02) 1px, transparent 1px);
+/* Sub-pixel text rendering optimizations */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

@@ -92,7 +92,7 @@ module risk_compliance::risk_compliance {
 
     /// Log a risk alert on-chain and emit a queryable Sui Event.
     /// Called by the off-chain AI agent backend for every critical alert.
-    public fun store_alert(
+    public entry fun store_alert(
         store: &mut AlertStore,
         tx_hash: String,
         risk_score: u64,
@@ -112,7 +112,7 @@ module risk_compliance::risk_compliance {
     /// Autonomous agent action: pause the protocol when risk score is critical (>= 90).
     /// This is called by the AI agent backend via a Programmable Transaction Block (PTB).
     /// The action is irreversible without an explicit DAO override.
-    public fun trigger_market_pause(
+    public entry fun trigger_market_pause(
         store: &mut AlertStore,
         risk_score: u64,
         ctx: &mut TxContext
@@ -136,7 +136,7 @@ module risk_compliance::risk_compliance {
     /// DAO human override: resume the market after AI-triggered pause.
     /// Requires the caller to hold a DaoVoteCap — enforced by Move's type system.
     /// This is the "reversible by DAO override" mechanism required by the rubric.
-    public fun dao_override_resume(
+    public entry fun dao_override_resume(
         _dao_cap: &DaoVoteCap,
         store: &mut AlertStore,
         reason: String,
@@ -155,7 +155,7 @@ module risk_compliance::risk_compliance {
 
     /// Update the minimum score threshold for on-chain alert logging.
     /// Restricted to AdminCap holders only.
-    public fun update_threshold(
+    public entry fun update_threshold(
         _admin: &AdminCap,
         store: &mut AlertStore,
         new_threshold: u64,

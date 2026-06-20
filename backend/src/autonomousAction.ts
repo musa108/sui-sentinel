@@ -192,3 +192,47 @@ export async function executeDAOResume(reason: string): Promise<boolean> {
     return false;
   }
 }
+
+/**
+ * On-chain action: store an alert record via Programmable Transaction Block.
+ */
+export async function executeStoreAlert(txHash: string, riskScore: number, category: string, timestamp: number): Promise<string | null> {
+  const packageId = process.env.SUI_PACKAGE_ID;
+  const alertStoreId = process.env.SUI_ALERT_STORE_ID;
+  const privateKeyB64 = process.env.AGENT_PRIVATE_KEY;
+
+  if (!packageId || !alertStoreId || !privateKeyB64) {
+    console.log(`[AutonomousAction] Store Alert (SIMULATION): ${txHash} - Score: ${riskScore}`);
+    return `SIMULATED_STORE_${Date.now().toString(16).toUpperCase()}`;
+  }
+
+  try {
+    const keypair = Ed25519Keypair.fromSecretKey(
+      Buffer.from(privateKeyB64, 'base64')
+    );
+    const client = new SuiClient({
+      url: process.env.SUI_RPC_URL || getFullnodeUrl('testnet'),
+    });
+
+    const tx = new Transaction();
+    tx.moveCall({
+      target: `${packageId}::risk_compliance::store_alert`,
+      arguments: [
+        tx.object(alertStoreId),
+        tx.pure.string(txHash),
+        tx.pure.u64(riskScore),
+        tx.pure.string(category),
+        tx.pure.u64(timestamp),
+      ],
+    });
+    tx.setGasBudget(10_000_000);
+
+    const result = await client.signAndExecuteTransaction({ signer: keypair, transaction: tx });
+    console.log(`[AutonomousAction] 📝 ON-CHAIN ALERT STORED. Digest: ${result.digest}`);
+    return result.digest;
+
+  } catch (err) {
+    console.error('[AutonomousAction] ❌ Failed to store alert on-chain:', err);
+    return null;
+  }
+}

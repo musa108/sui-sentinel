@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { API_URL } from "@/config";
 import { 
   Sliders, 
   ToggleLeft, 
@@ -30,7 +31,7 @@ export default function SettingsPage() {
   useEffect(() => {
     async function loadSettings() {
       try {
-        const res = await fetch("https://sui-sentinel.onrender.com/api/settings");
+        const res = await fetch(`${API_URL}/api/settings`);
         if (res.ok) {
           const data = await res.json();
           setSettings(data);
@@ -51,7 +52,7 @@ export default function SettingsPage() {
     setSaving(true);
     setSuccess(false);
     try {
-      const res = await fetch("https://sui-sentinel.onrender.com/api/settings", {
+      const res = await fetch(`${API_URL}/api/settings`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(settings),

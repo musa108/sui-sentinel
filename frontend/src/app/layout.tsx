@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { WS_URL } from "@/config";
 import Link from "next/link";
 import Image from "next/image";
 import { 
@@ -52,7 +53,7 @@ export default function RootLayout({
     const interval = setInterval(updateTime, 60000);
 
     // Setup active WebSocket tracker for connection status panel
-    const wsUrl = "https://sui-sentinel.onrender.com";
+    const wsUrl = WS_URL;
     let socket: WebSocket;
 
     function connect() {

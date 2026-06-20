@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { API_URL } from "@/config";
 import { 
   BarChart, 
   Bar, 
@@ -30,7 +31,7 @@ export default function AnalyticsPage() {
   useEffect(() => {
     async function fetchAnalytics() {
       try {
-        const res = await fetch("https://sui-sentinel.onrender.com/api/stats");
+        const res = await fetch(`${API_URL}/api/stats`);
         if (res.ok) {
           const stats = await res.json();
           setData(stats);

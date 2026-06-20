@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { API_URL, WS_URL } from "@/config";
 import {
   ShieldCheck,
   AlertTriangle,
@@ -69,7 +70,7 @@ export default function OverviewPage() {
   const handleDAOResume = useCallback(async () => {
     setResuming(true);
     try {
-      const res = await fetch("https://sui-sentinel.onrender.com/api/market-resume", {
+      const res = await fetch(`${API_URL}/api/market-resume`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ reason: "DAO operator manual override — risk conditions reassessed" }),
@@ -89,10 +90,10 @@ export default function OverviewPage() {
     async function fetchData() {
       try {
         const [alertsRes, statsRes, priceRes, statusRes] = await Promise.all([
-          fetch("https://sui-sentinel.onrender.com/api/alerts"),
-          fetch("https://sui-sentinel.onrender.com/api/stats"),
-          fetch("https://sui-sentinel.onrender.com/api/price"),
-          fetch("https://sui-sentinel.onrender.com/api/market-status"),
+          fetch(`${API_URL}/api/alerts`),
+          fetch(`${API_URL}/api/stats`),
+          fetch(`${API_URL}/api/price`),
+          fetch(`${API_URL}/api/market-status`),
         ]);
         if (alertsRes.ok) setAlerts(await alertsRes.json());
         if (statsRes.ok) {
@@ -123,7 +124,7 @@ export default function OverviewPage() {
     fetchData();
 
     // WebSocket stream
-    const ws = new WebSocket("https://sui-sentinel.onrender.com");
+    const ws = new WebSocket(WS_URL);
     ws.onmessage = (event) => {
       try {
         const msg = JSON.parse(event.data);

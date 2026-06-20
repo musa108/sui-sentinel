@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { API_URL, WS_URL } from "@/config";
 import {
   Search,
   ShieldAlert,
@@ -49,11 +50,12 @@ export default function AlertsPage() {
   });
   const [resuming, setResuming] = useState(false);
   const [overrideReason, setOverrideReason] = useState("");
+  const [isStoring, setIsStoring] = useState(false);
 
   const handleDAOResume = useCallback(async () => {
     setResuming(true);
     try {
-      const res = await fetch("https://sui-sentinel.onrender.com/api/market-resume", {
+      const res = await fetch(`${API_URL}/api/market-resume`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -71,12 +73,40 @@ export default function AlertsPage() {
     }
   }, [overrideReason]);
 
+  const handleStoreAlert = useCallback(async () => {
+    if (!selectedAlert) return;
+    setIsStoring(true);
+    try {
+      const res = await fetch(`${API_URL}/api/store-alert`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          txHash: selectedAlert.txHash,
+          riskScore: selectedAlert.riskScore,
+          category: selectedAlert.category,
+          timestamp: new Date(selectedAlert.timestamp).getTime()
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert(`Alert stored on-chain! Digest: ${data.digest}`);
+      } else {
+        alert(`Failed to store alert: ${data.message}`);
+      }
+    } catch (err) {
+      console.error("Store alert failed:", err);
+      alert("An error occurred while storing the alert.");
+    } finally {
+      setIsStoring(false);
+    }
+  }, [selectedAlert]);
+
   useEffect(() => {
     async function fetchAll() {
       try {
         const [alertsRes, statusRes] = await Promise.all([
-          fetch("https://sui-sentinel.onrender.com/api/alerts"),
-          fetch("https://sui-sentinel.onrender.com/api/market-status"),
+          fetch(`${API_URL}/api/alerts`),
+          fetch(`${API_URL}/api/market-status`),
         ]);
         if (alertsRes.ok) {
           const data = await alertsRes.json();
@@ -100,7 +130,7 @@ export default function AlertsPage() {
     }
     fetchAll();
 
-    const ws = new WebSocket("https://sui-sentinel.onrender.com");
+    const ws = new WebSocket(WS_URL);
     ws.onmessage = (event) => {
       try {
         const msg = JSON.parse(event.data);
@@ -378,10 +408,12 @@ export default function AlertsPage() {
                   <Eye className="w-4 h-4" /> Inspect
                 </a>
                 <button
-                  onClick={() => alert("On-chain store_alert() PTB would be called here with SUI_PACKAGE_ID set.")}
-                  className="flex-1 flex items-center justify-center gap-2 py-2 bg-cyan-700 hover:bg-cyan-600 font-semibold text-xs font-mono rounded-xl text-white transition shadow-lg hover:shadow-cyan-500/15"
+                  onClick={handleStoreAlert}
+                  disabled={isStoring}
+                  className="flex-1 flex items-center justify-center gap-2 py-2 bg-cyan-700 hover:bg-cyan-600 disabled:opacity-60 font-semibold text-xs font-mono rounded-xl text-white transition shadow-lg hover:shadow-cyan-500/15"
                 >
-                  <Settings2 className="w-4 h-4" /> Store On-Chain
+                  <Settings2 className={`w-4 h-4 ${isStoring ? "animate-spin" : ""}`} /> 
+                  {isStoring ? "Storing..." : "Store On-Chain"}
                 </button>
               </div>
             </div>

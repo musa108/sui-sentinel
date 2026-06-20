@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 import { prisma } from './db.js';
 import { blockchainListener } from './listener.js';
 import { startPriceFeeder, getCurrentPrice } from './priceFeeder.js';
-import { actionEvents, getMarketStatus, executeDAOResume } from './autonomousAction.js';
+import { actionEvents, getMarketStatus, executeDAOResume, executeStoreAlert } from './autonomousAction.js';
 
 dotenv.config();
 
@@ -118,6 +118,21 @@ app.post('/api/market-resume', async (req, res) => {
     res.json({ success: true, message: 'Market resumed via DAO override', reason });
   } else {
     res.status(400).json({ success: false, message: 'Market is not currently paused or override failed' });
+  }
+});
+
+/** Store an alert on-chain manually */
+app.post('/api/store-alert', async (req, res) => {
+  const { txHash, riskScore, category, timestamp } = req.body;
+  if (!txHash || riskScore === undefined || !category || !timestamp) {
+    return res.status(400).json({ success: false, message: 'Missing alert parameters' });
+  }
+  
+  const digest = await executeStoreAlert(txHash, riskScore, category, timestamp);
+  if (digest) {
+    res.json({ success: true, message: 'Alert successfully stored on-chain', digest });
+  } else {
+    res.status(500).json({ success: false, message: 'Failed to store alert on-chain' });
   }
 });
 
